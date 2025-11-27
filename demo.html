@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reach Stacker Weight Simulator</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-box h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .result-box p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .canvas-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        canvas {
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 2px solid #0c5460;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗 Reach Stacker Weight Simulator</h1>
+            <p>Sistem Simulasi Timbangan Reach Stacker</p>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h2>⚙ Parameter Input</h2>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Sudut Boom (°)</label>
+                        <input type="number" id="sim_angle" value="25" step="0.1" min="0" max="60">
+                    </div>
+                    <div class="input-group">
+                        <label>Panjang Teleskopik (cm)</label>
+                        <input type="number" id="sim_length" value="0" step="1" min="0" max="700">
+                    </div>
+                    <div class="input-group">
+                        <label>Tekanan Kiri (bar)</label>
+                        <input type="number" id="sim_pressure_left" value="200" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Tekanan Kanan (bar)</label>
+                        <input type="number" id="sim_pressure_right" value="200" step="0.1">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="calculateWeight()">🧮 Hitung Berat</button>
+            </div>
+
+            <div class="section">
+                <h2>📊 Hasil Perhitungan</h2>
+                <div id="sim_results"></div>
+            </div>
+
+            <div class="canvas-container">
+                <h3>Visualisasi Reach Stacker</h3>
+                <canvas id="visualCanvas" width="800" height="500"></canvas>
+            </div>
+
+            <div class="section">
+                <h2>ℹ Informasi</h2>
+                <div class="info-box">
+                    <strong>✅ Aplikasi Berhasil Dijalankan!</strong><br><br>
+                    Fitur yang tersedia:<br>
+                    - ✓ Perhitungan berat container<br>
+                    - ✓ Visualisasi real-time<br>
+                    - ✓ Deteksi overload<br>
+                    - ✓ Perhitungan reach dan kapasitas<br><br>
+
+                    <strong>📚 Untuk fitur lengkap:</strong><br>
+                    - Regresi Linear<br>
+                    - Konfigurasi Dimensi<br>
+                    - Database Real-time<br>
+                    Silakan buka file <code>index.html</code> yang sudah disediakan.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dimensions = {
+            boom_length: 906,
+            horizontal_offset: 600,
+            hydraulic_const: 481.25,
+            mech_advantage: 302,
+            calib_factor: 0.98310488,
+            calib_offset: 16512.97,
+            rigging_weight: 4,
+            loadchart_slope: -3.993,
+            loadchart_intercept: 46.43
+        };
+
+        function calculateWeight() {
+            const angle = parseFloat(document.getElementById('sim_angle').value);
+            const length = parseFloat(document.getElementById('sim_length').value);
+            const pressureLeft = parseFloat(document.getElementById('sim_pressure_left').value);
+            const pressureRight = parseFloat(document.getElementById('sim_pressure_right').value);
+
+            const p = (pressureLeft + pressureRight) / 2;
+            const toRad = Math.PI / 180;
+            const angleRad = angle * toRad;
+
+            let beta = angle > 30 ? (angle * 0.94) - 27.1 : (angle * -0.96667) + 30;
+            const betaRad = beta * toRad;
+
+            const alpha = 90 - angle;
+            const alphaRad = alpha * toRad;
+
+            const r = ((dimensions.boom_length + length) * Math.cos(alphaRad)) +
+                (3 * Math.cos((90 - alpha) * toRad)) - dimensions.horizontal_offset;
+            const reach_m = r / 100;
+
+            const z1 = p * dimensions.hydraulic_const;
+            const z2 = z1 * Math.cos(betaRad);
+            const z3 = (length + dimensions.boom_length + (116 * Math.sin(alphaRad))) / dimensions.mech_advantage;
+            const z4 = z2 / z3;
+            const z5 = z4 / Math.sin((90 - alpha) * toRad);
+            const z6 = z5 * dimensions.calib_factor;
+            const z7 = z6 - dimensions.calib_offset;
+            const weight = (z7 / 1000) + dimensions.rigging_weight;
+
+            const maxLoad = (dimensions.loadchart_slope * reach_m) + dimensions.loadchart_intercept;
+            const isOverload = weight > maxLoad;
+
+            let resultsHTML = `
+                <div class="grid">
+                    <div class="result-box ${isOverload ? 'alert-danger' : ''}">
+                        <h3>${weight.toFixed(2)} ton</h3>
+                        <p>Berat Kontainer</p>
+                    </div>
+                    <div class="result-box">
+                        <h3>${reach_m.toFixed(2)} m</h3>
+                        <p>Jarak Horizontal (Reach)</p>
+                    </div>
+                    <div class="result-box">
+                        <h3>${maxLoad.toFixed(2)} ton</h3>
+                        <p>Kapasitas Max</p>
+                    </div>
+                </div>
+            `;
+
+            if (isOverload) {
+                resultsHTML += `
+                    <div class="alert alert-danger" style="margin-top: 20px;">
+                        <strong>⚠ OVERLOAD DETECTED!</strong><br>
+                        Berat melebihi kapasitas maksimum!<br>
+                        Selisih: ${(weight - maxLoad).toFixed(2)} ton
+                    </div>
+                `;
+            }
+
+            document.getElementById('sim_results').innerHTML = resultsHTML;
+            drawVisualization(angle, length, reach_m, weight, isOverload);
+        }
+
+        function drawVisualization(angle, length, reach, weight, isOverload) {
+            const canvas = document.getElementById('visualCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const scale = 0.5;
+            const offsetX = 200;
+            const offsetY = 400;
+            const angleRad = angle * Math.PI / 180;
+
+            const boomLength = (dimensions.boom_length + length) * scale;
+            const endX = offsetX + boomLength * Math.cos(angleRad);
+            const endY = offsetY - boomLength * Math.sin(angleRad);
+
+            // Ground
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, offsetY);
+            ctx.lineTo(canvas.width, offsetY);
+            ctx.stroke();
+
+            // Vehicle
+            ctx.fillStyle = '#f39c12';
+            ctx.fillRect(offsetX - 80, offsetY - 60, 160, 60);
+
+            // Wheels
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(offsetX - 50, offsetY, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(offsetX + 50, offsetY, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Boom
+            ctx.strokeStyle = isOverload ? '#e74c3c' : '#3498db';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.moveTo(offsetX, offsetY - 60);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Container
+            ctx.fillStyle = isOverload ? '#e74c3c' : '#27ae60';
+            ctx.fillRect(endX - 30, endY - 20, 60, 40);
+
+            // Annotations
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 14px Arial';
+            ctx.fillText(`Angle: ${angle.toFixed(1)}°`, 20, 30);
+            ctx.fillText(`Length: ${length.toFixed(0)} cm`, 20, 50);
+            ctx.fillText(`Reach: ${reach.toFixed(2)} m`, 20, 70);
+            ctx.fillText(`Weight: ${weight.toFixed(2)} ton`, 20, 90);
+
+            if (isOverload) {
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 20px Arial';
+                ctx.fillText('⚠ OVERLOAD!', canvas.width - 180, 30);
+            }
+        }
+
+        // Initialize
+        window.onload = function () {
+            calculateWeight();
+        };
+    </script>
+</body>
+
+</html>

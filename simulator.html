@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulator - Reach Stacker Weight Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .nav {
+            background: #ecf0f1;
+            padding: 15px 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav a {
+            padding: 10px 20px;
+            background: #bdc3c7;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover {
+            background: #95a5a6;
+        }
+
+        .nav a.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #3498db;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: transform 0.2s;
+            margin: 5px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+        }
+
+        .result-box {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-box h3 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .result-box p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .canvas-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        canvas {
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 2px solid #0c5460;
+            color: #0c5460;
+        }
+
+        .unit-info {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .unit-info h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .unit-info p {
+            color: #7f8c8d;
+            margin: 5px 0;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗 Simulator Berat Reach Stacker</h1>
+            <p>Perhitungan Berat Container Berdasarkan Data Unit</p>
+        </div>
+
+        <div class="nav">
+            <a href="setup.html">Setup Unit</a>
+            <a href="simulator.html" class="active">Simulator</a>
+        </div>
+
+        <div class="content">
+            <div class="loading" id="loadingUnits">
+                <div class="spinner"></div>
+                <p>Memuat data unit dari Google Sheets...</p>
+            </div>
+
+            <div id="mainContent" style="display:none;">
+                <!-- Unit Selection -->
+                <div class="section">
+                    <h2>🔧 Pilih Unit Reach Stacker</h2>
+
+                    <div class="alert alert-info">
+                        <strong>ℹ Info:</strong> Pilih unit yang sudah dikonfigurasi untuk memulai simulasi perhitungan
+                        berat.
+                    </div>
+
+                    <div class="input-group">
+                        <label>Unit Reach Stacker</label>
+                        <select id="unit_selector" onchange="loadUnitData()">
+                            <option value="">-- Pilih Unit --</option>
+                        </select>
+                    </div>
+
+                    <div id="unit_info_display"></div>
+                </div>
+
+                <!-- Simulator -->
+                <div class="section" id="simulator_section" style="display:none;">
+                    <h2>⚙ Parameter Input</h2>
+
+                    <div class="grid">
+                        <div class="input-group">
+                            <label>Sudut Boom (°)</label>
+                            <input type="number" id="sim_angle" value="25" step="0.1" min="0" max="60">
+                        </div>
+                        <div class="input-group">
+                            <label>Panjang Teleskopik (cm)</label>
+                            <input type="number" id="sim_length" value="0" step="1" min="0" max="700">
+                        </div>
+                        <div class="input-group">
+                            <label>Tekanan Kiri (bar)</label>
+                            <input type="number" id="sim_pressure_left" value="200" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>Tekanan Kanan (bar)</label>
+                            <input type="number" id="sim_pressure_right" value="200" step="0.1">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-success" onclick="calculateWeight()">🧮 Hitung Berat</button>
+                </div>
+
+                <!-- Results -->
+                <div class="section" id="results_section" style="display:none;">
+                    <h2>📊 Hasil Perhitungan</h2>
+                    <div id="sim_results"></div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="canvas-container" id="visualization_section" style="display:none;">
+                    <h3>Visualisasi Reach Stacker</h3>
+                    <canvas id="visualCanvas" width="800" height="500"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvYc0-5zY0cEWh9H4Jum-XBYb9oFCt6fNSVqazNHe6u79QESZKIbTJ97KBZVz-6J3ygA/exec';
+
+        // Load units from Google Sheets
+        async function loadUnitsFromGoogleSheets() {
+            document.getElementById('loadingUnits').classList.add('show');
+
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getUnits');
+                const data = await response.json();
+
+                if (data.success) {
+                    unitsData = data.units;
+                    populateUnitSelector();
+                    document.getElementById('loadingUnits').classList.remove('show');
+                    document.getElementById('mainContent').style.display = 'block';
+                } else {
+                    throw new Error('Failed to load units');
+                }
+            } catch (error) {
+                console.error('Error loading units:', error);
+                document.getElementById('loadingUnits').innerHTML = `
+                    <div class="alert alert-danger">
+                        <strong>❌ Error:</strong> Gagal memuat data unit dari Google Sheets.<br>
+                        <small>Pastikan Google Apps Script sudah dikonfigurasi dengan benar.</small><br>
+                        <button class="btn" onclick="loadUnitsFromGoogleSheets()" style="margin-top: 10px;">🔄 Coba Lagi</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Populate unit selector
+        function populateUnitSelector() {
+            const selector = document.getElementById('unit_selector');
+            selector.innerHTML = '<option value="">-- Pilih Unit --</option>';
+
+            unitsData.forEach((unit, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                option.textContent = `${unit.unit_name} - ${unit.unit_brand || 'Unknown'}`;
+                selector.appendChild(option);
+            });
+        }
+
+        // Load unit data
+        function loadUnitData() {
+            const selector = document.getElementById('unit_selector');
+            const selectedIndex = selector.value;
+
+            if (selectedIndex === '') {
+                document.getElementById('unit_info_display').innerHTML = '';
+                document.getElementById('simulator_section').style.display = 'none';
+                document.getElementById('results_section').style.display = 'none';
+                document.getElementById('visualization_section').style.display = 'none';
+                currentUnit = null;
+                return;
+            }
+
+            currentUnit = unitsData[selectedIndex];
+
+            // Display unit info
+            const infoHTML = `
+                <div class="unit-info">
+                    <h4>📋 Informasi Unit</h4>
+                    <p><strong>Nama:</strong> ${currentUnit.unit_name}</p>
+                    <p><strong>Merk/Model:</strong> ${currentUnit.unit_brand || '-'}</p>
+                    <p><strong>Tahun:</strong> ${currentUnit.unit_year || '-'}</p>
+                    <p><strong>Lokasi:</strong> ${currentUnit.unit_location || '-'}</p>
+                    <p><strong>Koefisien Kalibrasi:</strong> ${parseFloat(currentUnit.calib_factor).toFixed(8)}</p>
+                    <p><strong>R² Kalibrasi:</strong> ${(parseFloat(currentUnit.r_squared) * 100).toFixed(2)}%</p>
+                </div>
+            `;
+
+            document.getElementById('unit_info_display').innerHTML = infoHTML;
+            document.getElementById('simulator_section').style.display = 'block';
+        }
+
+        // Calculate weight
+        function calculateWeight() {
+            if (!currentUnit) {
+                alert('Silakan pilih unit terlebih dahulu!');
+                return;
+            }
+
+            const angle = parseFloat(document.getElementById('sim_angle').value);
+            const length = parseFloat(document.getElementById('sim_length').value);
+            const pressureLeft = parseFloat(document.getElementById('sim_pressure_left').value);
+            const pressureRight = parseFloat(document.getElementById('sim_pressure_right').value);
+
+            // Average pressure
+            const p = (pressureLeft + pressureRight) / 2;
+
+            // Get dimensions from current unit
+            const dimensions = {
+                boom_length: parseFloat(currentUnit.boom_length),
+                horizontal_offset: parseFloat(currentUnit.horizontal_offset),
+                hydraulic_const: parseFloat(currentUnit.hydraulic_const),
+                mech_advantage: parseFloat(currentUnit.mech_advantage),
+                calib_factor: parseFloat(currentUnit.calib_factor),
+                calib_offset: parseFloat(currentUnit.calib_offset),
+                rigging_weight: parseFloat(currentUnit.rigging_weight),
+                loadchart_slope: parseFloat(currentUnit.loadchart_slope),
+                loadchart_intercept: parseFloat(currentUnit.loadchart_intercept)
+            };
+
+            // Convert to radians
+            const toRad = Math.PI / 180;
+            const angleRad = angle * toRad;
+
+            // Calculate beta
+            let beta = angle > 30 ? (angle * 0.94) - 27.1 : (angle * -0.96667) + 30;
+            const betaRad = beta * toRad;
+
+            // Calculate alpha
+            const alpha = 90 - angle;
+            const alphaRad = alpha * toRad;
+
+            // Calculate reach
+            const r = ((dimensions.boom_length + length) * Math.cos(alphaRad)) +
+                (3 * Math.cos((90 - alpha) * toRad)) - dimensions.horizontal_offset;
+            const reach_m = r / 100;
+
+            // Weight calculation
+            const z1 = p * dimensions.hydraulic_const;
+            const z2 = z1 * Math.cos(betaRad);
+            const z3 = (length + dimensions.boom_length + (116 * Math.sin(alphaRad))) / dimensions.mech_advantage;
+            const z4 = z2 / z3;
+            const z5 = z4 / Math.sin((90 - alpha) * toRad);
+            const z6 = z5 * dimensions.calib_factor;
+            const z7 = z6 - dimensions.calib_offset;
+            const weight = (z7 / 1000) + dimensions.rigging_weight;
+
+            // Overload check
+            const maxLoad = (dimensions.loadchart_slope * reach_m) + dimensions.loadchart_intercept;
+            const isOverload = weight > maxLoad;
+
+            // Display results
+            let resultsHTML = `
+                <div class="grid">
+                    <div class="result-box ${isOverload ? 'alert-danger' : ''}">
+                        <h3>${weight.toFixed(2)} ton</h3>
+                        <p>Berat Kontainer</p>
+                    </div>
+                    <div class="result-box">
+                        <h3>${reach_m.toFixed(2)} m</h3>
+                        <p>Jarak Horizontal (Reach)</p>
+                    </div>
+                    <div class="result-box">
+                        <h3>${maxLoad.toFixed(2)} ton</h3>
+                        <p>Kapasitas Max di Reach Ini</p>
+                    </div>
+                </div>
+                
+                <div class="grid" style="margin-top: 20px;">
+                    <div style="background: white; padding: 15px; border-radius: 10px;">
+                        <strong>α (Alpha):</strong> ${alpha.toFixed(2)}°<br>
+                        <strong>β (Beta):</strong> ${beta.toFixed(2)}°<br>
+                        <strong>Pressure Avg:</strong> ${p.toFixed(2)} bar
+                    </div>
+                    <div style="background: white; padding: 15px; border-radius: 10px;">
+                        <strong>z5 (F1):</strong> ${z5.toFixed(3)}<br>
+                        <strong>z6 (Calibrated):</strong> ${z6.toFixed(2)}<br>
+                        <strong>z7 (Net Force):</strong> ${z7.toFixed(2)}
+                    </div>
+                </div>
+            `;
+
+            if (isOverload) {
+                resultsHTML += `
+                    <div class="alert alert-danger" style="margin-top: 20px;">
+                        <strong>⚠ OVERLOAD DETECTED!</strong><br>
+                        Berat melebihi kapasitas maksimum untuk reach ini!<br>
+                        Selisih: ${(weight - maxLoad).toFixed(2)} ton
+                    </div>
+                `;
+            }
+
+            document.getElementById('sim_results').innerHTML = resultsHTML;
+            document.getElementById('results_section').style.display = 'block';
+            document.getElementById('visualization_section').style.display = 'block';
+
+            // Draw visualization
+            drawVisualization(angle, length, reach_m, weight, isOverload, dimensions);
+        }
+
+        // Draw visualization
+        function drawVisualization(angle, length, reach, weight, isOverload, dimensions) {
+            const canvas = document.getElementById('visualCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const scale = 0.5;
+            const offsetX = 200;
+            const offsetY = 400;
+            const angleRad = angle * Math.PI / 180;
+
+            const boomLength = (dimensions.boom_length + length) * scale;
+            const endX = offsetX + boomLength * Math.cos(angleRad);
+            const endY = offsetY - boomLength * Math.sin(angleRad);
+
+            // Ground
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(0, offsetY);
+            ctx.lineTo(canvas.width, offsetY);
+            ctx.stroke();
+
+            // Vehicle
+            ctx.fillStyle = '#f39c12';
+            ctx.fillRect(offsetX - 80, offsetY - 60, 160, 60);
+
+            // Wheels
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(offsetX - 50, offsetY, 20, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(offsetX + 50, offsetY, 20, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Boom
+            ctx.strokeStyle = isOverload ? '#e74c3c' : '#3498db';
+            ctx.lineWidth = 8;
+            ctx.beginPath();
+            ctx.moveTo(offsetX, offsetY - 60);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Pivot
+            ctx.fillStyle = '#e74c3c';
+            ctx.beginPath();
+            ctx.arc(offsetX, offsetY - 60, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Container
+            ctx.fillStyle = isOverload ? '#e74c3c' : '#27ae60';
+            ctx.fillRect(endX - 30, endY - 20, 60, 40);
+            ctx.strokeStyle = '#2c3e50';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(endX - 30, endY - 20, 60, 40);
+
+            // Annotations
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 14px Inter';
+            ctx.fillText(`Unit: ${currentUnit.unit_name}`, 20, 30);
+            ctx.fillText(`Angle: ${angle.toFixed(1)}°`, 20, 50);
+            ctx.fillText(`Length: ${length.toFixed(0)} cm`, 20, 70);
+            ctx.fillText(`Reach: ${reach.toFixed(2)} m`, 20, 90);
+            ctx.fillText(`Weight: ${weight.toFixed(2)} ton`, 20, 110);
+
+            if (isOverload) {
+                ctx.fillStyle = '#e74c3c';
+                ctx.font = 'bold 20px Inter';
+                ctx.fillText('⚠ OVERLOAD!', canvas.width - 180, 30);
+            }
+
+            // Reach line
+            ctx.strokeStyle = '#95a5a6';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(offsetX, offsetY);
+            ctx.lineTo(endX, offsetY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Angle arc
+            ctx.strokeStyle = '#9b59b6';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(offsetX, offsetY - 60, 50, -angleRad, 0);
+            ctx.stroke();
+        }
+
+        // Initialize
+        let unitsData = [];
+        let currentUnit = null;
+        loadUnitsFromGoogleSheets();
+    </script>
+</body>
+
+</html>

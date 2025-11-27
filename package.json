@@ -1,0 +1,30 @@
+{
+  "name": "reach-stacker-weight-simulator",
+  "version": "1.0.0",
+  "description": "Reach Stacker Weight Simulator & Regression Tool with Real-time Database",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 3000 -o",
+    "dev": "npx http-server -p 3000 -o",
+    "demo": "npx http-server -p 3000 -o demo.html",
+    "build": "echo 'No build step required - static HTML app'",
+    "deploy:netlify": "netlify deploy --prod",
+    "deploy:vercel": "vercel --prod"
+  },
+  "keywords": [
+    "reach-stacker",
+    "weight-simulator",
+    "regression",
+    "hydraulic",
+    "container",
+    "port-equipment"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/reach-stacker-weight-simulator.git"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}
