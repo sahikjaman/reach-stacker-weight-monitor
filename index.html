@@ -609,41 +609,28 @@
             regression_data: JSON.stringify(regressionData),
 
             // Metadata
-            created_at: new Date().toISOString(),
-            total_data_points: regressionData.empty.length + regressionData.test.length + regressionData.none.length
-        };
+        },
+            body: JSON.stringify(data)
+    });
 
-        try {
-            // Google Apps Script Web App URL
-            const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvYc0-5zY0cEWh9H4Jum-XBYb9oFCt6fNSVqazNHe6u79QESZKIbTJ97KBZVz-6J3ygA/exec';
+    // Hide loading
+    document.getElementById('loadingIndicator').classList.remove('show');
+    document.getElementById('btnSave').disabled = false;
 
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'text/plain',
-                },
-                body: JSON.stringify(data)
-            });
+    // Show success
+    showAlert('success', '✅ Data berhasil disimpan ke Google Sheets!');
 
-            // Hide loading
-            document.getElementById('loadingIndicator').classList.remove('show');
-            document.getElementById('btnSave').disabled = false;
-
-            // Show success
-            showAlert('success', '✅ Data berhasil disimpan ke Google Sheets!');
-
-            // Redirect to simulator after 2 seconds
-            setTimeout(() => {
-                window.location.href = 'simulator.html';
-            }, 2000);
+    // Redirect to simulator after 2 seconds
+    setTimeout(() => {
+        window.location.href = 'simulator.html';
+    }, 2000);
 
         } catch (error) {
-            console.error('Error:', error);
-            document.getElementById('loadingIndicator').classList.remove('show');
-            document.getElementById('btnSave').disabled = false;
-            showAlert('danger', '❌ Gagal menyimpan data. Silakan coba lagi.');
-        }
+        console.error('Error:', error);
+        document.getElementById('loadingIndicator').classList.remove('show');
+        document.getElementById('btnSave').disabled = false;
+        showAlert('danger', '❌ Gagal menyimpan data. Silakan coba lagi.');
+    }
     }
 
     // Initialize

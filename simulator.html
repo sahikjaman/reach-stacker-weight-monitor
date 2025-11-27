@@ -58,94 +58,81 @@
     <div class="canvas-container" id="visualization_section" style="display:none;">
         <h3>Visualisasi Reach Stacker</h3>
         <canvas id="visualCanvas" width="800" height="500"></canvas>
-    </div>
-</div>
-</div>
-</div>
-
-<script>
-    // Google Apps Script Web App URL
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvYc0-5zY0cEWh9H4Jum-XBYb9oFCt6fNSVqazNHe6u79QESZKIbTJ97KBZVz-6J3ygA/exec';
-
-    // Load units from Google Sheets
-    async function loadUnitsFromGoogleSheets() {
-        document.getElementById('loadingUnits').classList.add('show');
-
         try {
-            const response = await fetch(SCRIPT_URL + '?action=getUnits');
-            const data = await response.json();
+        const response = await fetch(SCRIPT_URL + '?action=getUnits');
+        const data = await response.json();
 
-            if (data.success) {
-                unitsData = data.units;
-                populateUnitSelector();
-                document.getElementById('loadingUnits').classList.remove('show');
-                document.getElementById('mainContent').style.display = 'block';
-            } else {
-                throw new Error('Failed to load units');
-            }
-        } catch (error) {
-            console.error('Error loading units:', error);
-            document.getElementById('loadingUnits').innerHTML = `
-                    <div class="alert alert-danger">
-                        <strong>❌ Error:</strong> Gagal memuat data unit dari Google Sheets.<br>
-                        <small>Pastikan Google Apps Script sudah dikonfigurasi dengan benar.</small><br>
-                        <button class="btn" onclick="loadUnitsFromGoogleSheets()" style="margin-top: 10px;">🔄 Coba Lagi</button>
-                    </div>
-                `;
+        if (data.success) {
+        unitsData = data.units;
+        populateUnitSelector();
+        document.getElementById('loadingUnits').classList.remove('show');
+        document.getElementById('mainContent').style.display = 'block';
+        } else {
+        throw new Error('Failed to load units');
         }
-    }
+        } catch (error) {
+        console.error('Error loading units:', error);
+        document.getElementById('loadingUnits').innerHTML = `
+        <div class="alert alert-danger">
+            <strong>❌ Error:</strong> Gagal memuat data unit dari Google Sheets.<br>
+            <small>Pastikan Google Apps Script sudah dikonfigurasi dengan benar.</small><br>
+            <button class="btn" onclick="loadUnitsFromGoogleSheets()" style="margin-top: 10px;">🔄 Coba Lagi</button>
+        </div>
+        `;
+        }
+        }
 
-    // Populate unit selector
-    function populateUnitSelector() {
+        // Populate unit selector
+        function populateUnitSelector() {
         const selector = document.getElementById('unit_selector');
         selector.innerHTML = '<option value="">-- Pilih Unit --</option>';
 
         unitsData.forEach((unit, index) => {
-            const option = document.createElement('option');
-            option.value = index;
-            option.textContent = `${unit.unit_name} - ${unit.unit_brand || 'Unknown'}`;
-            selector.appendChild(option);
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${unit.unit_name} - ${unit.unit_brand || 'Unknown'}`;
+        selector.appendChild(option);
         });
-    }
+        }
 
-    // Load unit data
-    function loadUnitData() {
+        // Load unit data
+        function loadUnitData() {
         const selector = document.getElementById('unit_selector');
         const selectedIndex = selector.value;
 
         if (selectedIndex === '') {
-            document.getElementById('unit_info_display').innerHTML = '';
-            document.getElementById('simulator_section').style.display = 'none';
-            document.getElementById('results_section').style.display = 'none';
-            document.getElementById('visualization_section').style.display = 'none';
-            currentUnit = null;
-            return;
+        document.getElementById('unit_info_display').innerHTML = '';
+        document.getElementById('simulator_section').style.display = 'none';
+        document.getElementById('results_section').style.display = 'none';
+        document.getElementById('visualization_section').style.display = 'none';
+        currentUnit = null;
+        return;
         }
 
         currentUnit = unitsData[selectedIndex];
 
         // Display unit info
         const infoHTML = `
-                <div class="unit-info">
-                    <h4>📋 Informasi Unit</h4>
-                    <p><strong>Nama:</strong> ${currentUnit.unit_name}</p>
-                    <p><strong>Merk/Model:</strong> ${currentUnit.unit_brand || '-'}</p>
-                    <p><strong>Tahun:</strong> ${currentUnit.unit_year || '-'}</p>
-                    <p><strong>Lokasi:</strong> ${currentUnit.unit_location || '-'}</p>
-                    <p><strong>Koefisien Kalibrasi:</strong> ${parseFloat(currentUnit.calib_factor).toFixed(8)}</p>
-                    <p><strong>R² Kalibrasi:</strong> ${(parseFloat(currentUnit.r_squared) * 100).toFixed(2)}%</p>
-                </div>
-            `;
+        <div class="unit-info">
+            <h4>📋 Informasi Unit</h4>
+            <p><strong>Nama:</strong> ${currentUnit.unit_name}</p>
+            <p><strong>Merk/Model:</strong> ${currentUnit.unit_brand || '-'}</p>
+            <p><strong>Tahun:</strong> ${currentUnit.unit_year || '-'}</p>
+            <p><strong>Lokasi:</strong> ${currentUnit.unit_location || '-'}</p>
+            <p><strong>Koefisien Kalibrasi:</strong> ${parseFloat(currentUnit.calib_factor).toFixed(8)}</p>
+            <p><strong>R² Kalibrasi:</strong> ${(parseFloat(currentUnit.r_squared) * 100).toFixed(2)}%</p>
+        </div>
+        `;
 
         document.getElementById('unit_info_display').innerHTML = infoHTML;
         document.getElementById('simulator_section').style.display = 'block';
-    }
+        }
 
-    // Calculate weight
-    function calculateWeight() {
+        // Calculate weight
+        function calculateWeight() {
         if (!currentUnit) {
-            alert('Silakan pilih unit terlebih dahulu!');
-            return;
+        alert('Silakan pilih unit terlebih dahulu!');
+        return;
         }
 
         const angle = parseFloat(document.getElementById('sim_angle').value);
@@ -158,15 +145,15 @@
 
         // Get dimensions from current unit
         const dimensions = {
-            boom_length: parseFloat(currentUnit.boom_length),
-            horizontal_offset: parseFloat(currentUnit.horizontal_offset),
-            hydraulic_const: parseFloat(currentUnit.hydraulic_const),
-            mech_advantage: parseFloat(currentUnit.mech_advantage),
-            calib_factor: parseFloat(currentUnit.calib_factor),
-            calib_offset: parseFloat(currentUnit.calib_offset),
-            rigging_weight: parseFloat(currentUnit.rigging_weight),
-            loadchart_slope: parseFloat(currentUnit.loadchart_slope),
-            loadchart_intercept: parseFloat(currentUnit.loadchart_intercept)
+        boom_length: parseFloat(currentUnit.boom_length),
+        horizontal_offset: parseFloat(currentUnit.horizontal_offset),
+        hydraulic_const: parseFloat(currentUnit.hydraulic_const),
+        mech_advantage: parseFloat(currentUnit.mech_advantage),
+        calib_factor: parseFloat(currentUnit.calib_factor),
+        calib_offset: parseFloat(currentUnit.calib_offset),
+        rigging_weight: parseFloat(currentUnit.rigging_weight),
+        loadchart_slope: parseFloat(currentUnit.loadchart_slope),
+        loadchart_intercept: parseFloat(currentUnit.loadchart_intercept)
         };
 
         // Convert to radians
@@ -183,7 +170,7 @@
 
         // Calculate reach
         const r = ((dimensions.boom_length + length) * Math.cos(alphaRad)) +
-            (3 * Math.cos((90 - alpha) * toRad)) - dimensions.horizontal_offset;
+        (3 * Math.cos((90 - alpha) * toRad)) - dimensions.horizontal_offset;
         const reach_m = r / 100;
 
         // Weight calculation
@@ -202,43 +189,43 @@
 
         // Display results
         let resultsHTML = `
-                <div class="grid">
-                    <div class="result-box ${isOverload ? 'alert-danger' : ''}">
-                        <h3>${weight.toFixed(2)} ton</h3>
-                        <p>Berat Kontainer</p>
-                    </div>
-                    <div class="result-box">
-                        <h3>${reach_m.toFixed(2)} m</h3>
-                        <p>Jarak Horizontal (Reach)</p>
-                    </div>
-                    <div class="result-box">
-                        <h3>${maxLoad.toFixed(2)} ton</h3>
-                        <p>Kapasitas Max di Reach Ini</p>
-                    </div>
-                </div>
-                
-                <div class="grid" style="margin-top: 20px;">
-                    <div style="background: white; padding: 15px; border-radius: 10px;">
-                        <strong>α (Alpha):</strong> ${alpha.toFixed(2)}°<br>
-                        <strong>β (Beta):</strong> ${beta.toFixed(2)}°<br>
-                        <strong>Pressure Avg:</strong> ${p.toFixed(2)} bar
-                    </div>
-                    <div style="background: white; padding: 15px; border-radius: 10px;">
-                        <strong>z5 (F1):</strong> ${z5.toFixed(3)}<br>
-                        <strong>z6 (Calibrated):</strong> ${z6.toFixed(2)}<br>
-                        <strong>z7 (Net Force):</strong> ${z7.toFixed(2)}
-                    </div>
-                </div>
-            `;
+        <div class="grid">
+            <div class="result-box ${isOverload ? 'alert-danger' : ''}">
+                <h3>${weight.toFixed(2)} ton</h3>
+                <p>Berat Kontainer</p>
+            </div>
+            <div class="result-box">
+                <h3>${reach_m.toFixed(2)} m</h3>
+                <p>Jarak Horizontal (Reach)</p>
+            </div>
+            <div class="result-box">
+                <h3>${maxLoad.toFixed(2)} ton</h3>
+                <p>Kapasitas Max di Reach Ini</p>
+            </div>
+        </div>
+
+        <div class="grid" style="margin-top: 20px;">
+            <div style="background: white; padding: 15px; border-radius: 10px;">
+                <strong>α (Alpha):</strong> ${alpha.toFixed(2)}°<br>
+                <strong>β (Beta):</strong> ${beta.toFixed(2)}°<br>
+                <strong>Pressure Avg:</strong> ${p.toFixed(2)} bar
+            </div>
+            <div style="background: white; padding: 15px; border-radius: 10px;">
+                <strong>z5 (F1):</strong> ${z5.toFixed(3)}<br>
+                <strong>z6 (Calibrated):</strong> ${z6.toFixed(2)}<br>
+                <strong>z7 (Net Force):</strong> ${z7.toFixed(2)}
+            </div>
+        </div>
+        `;
 
         if (isOverload) {
-            resultsHTML += `
-                    <div class="alert alert-danger" style="margin-top: 20px;">
-                        <strong>⚠ OVERLOAD DETECTED!</strong><br>
-                        Berat melebihi kapasitas maksimum untuk reach ini!<br>
-                        Selisih: ${(weight - maxLoad).toFixed(2)} ton
-                    </div>
-                `;
+        resultsHTML += `
+        <div class="alert alert-danger" style="margin-top: 20px;">
+            <strong>⚠ OVERLOAD DETECTED!</strong><br>
+            Berat melebihi kapasitas maksimum untuk reach ini!<br>
+            Selisih: ${(weight - maxLoad).toFixed(2)} ton
+        </div>
+        `;
         }
 
         document.getElementById('sim_results').innerHTML = resultsHTML;
@@ -247,10 +234,10 @@
 
         // Draw visualization
         drawVisualization(angle, length, reach_m, weight, isOverload, dimensions);
-    }
+        }
 
-    // Draw visualization
-    function drawVisualization(angle, length, reach, weight, isOverload, dimensions) {
+        // Draw visualization
+        function drawVisualization(angle, length, reach, weight, isOverload, dimensions) {
         const canvas = document.getElementById('visualCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -317,9 +304,9 @@
         ctx.fillText(`Weight: ${weight.toFixed(2)} ton`, 20, 110);
 
         if (isOverload) {
-            ctx.fillStyle = '#e74c3c';
-            ctx.font = 'bold 20px Inter';
-            ctx.fillText('⚠ OVERLOAD!', canvas.width - 180, 30);
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 20px Inter';
+        ctx.fillText('⚠ OVERLOAD!', canvas.width - 180, 30);
         }
 
         // Reach line
@@ -338,13 +325,13 @@
         ctx.beginPath();
         ctx.arc(offsetX, offsetY - 60, 50, -angleRad, 0);
         ctx.stroke();
-    }
+        }
 
-    // Initialize
-    let unitsData = [];
-    let currentUnit = null;
-    loadUnitsFromGoogleSheets();
-</script>
-</body>
+        // Initialize
+        let unitsData = [];
+        let currentUnit = null;
+        loadUnitsFromGoogleSheets();
+        </script>
+        </body>
 
 </html>
