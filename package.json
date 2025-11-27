@@ -23,7 +23,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/reach-stacker-weight-simulator.git"
+    "url": "https://github.com/sahikjaman/reach-stacker-weight-monitor.git"
   },
   "devDependencies": {},
   "dependencies": {}
