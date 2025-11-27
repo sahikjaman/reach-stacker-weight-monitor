@@ -84,9 +84,6 @@ function saveUnit(data) {
             ];
 
             sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
-            sheet.getRange(1, 1, 1, headers.length).setFontWeight('bold');
-            sheet.getRange(1, 1, 1, headers.length).setBackground('#3498db');
-            sheet.getRange(1, 1, 1, headers.length).setFontColor('#ffffff');
             sheet.setFrozenRows(1);
         }
 
@@ -136,8 +133,8 @@ function saveUnit(data) {
             sheet.appendRow(rowData);
         }
 
-        // Auto-resize columns
-        sheet.autoResizeColumns(1, rowData.length);
+        // Terapkan formatting profesional
+        formatSheet(sheet);
 
         return ContentService.createTextOutput(JSON.stringify({
             success: true,
@@ -152,6 +149,73 @@ function saveUnit(data) {
             message: 'Error saving data: ' + error.toString()
         })).setMimeType(ContentService.MimeType.JSON);
     }
+}
+
+// Helper function untuk formatting profesional
+function formatSheet(sheet) {
+    const lastRow = sheet.getLastRow();
+    const lastColumn = sheet.getLastColumn();
+
+    if (lastRow < 1) return;
+
+    const fullRange = sheet.getRange(1, 1, lastRow, lastColumn);
+    const headerRange = sheet.getRange(1, 1, 1, lastColumn);
+    const dataRange = lastRow > 1 ? sheet.getRange(2, 1, lastRow - 1, lastColumn) : null;
+
+    // 1. Header Styling
+    headerRange
+        .setBackground('#1e293b') // Dark Slate Blue
+        .setFontColor('#ffffff')
+        .setFontWeight('bold')
+        .setFontFamily('Arial')
+        .setFontSize(10)
+        .setHorizontalAlignment('center')
+        .setVerticalAlignment('middle')
+        .setWrap(true);
+
+    // 2. Borders
+    fullRange.setBorder(true, true, true, true, true, true, '#cbd5e1', SpreadsheetApp.BorderStyle.SOLID);
+    headerRange.setBorder(true, true, true, true, true, true, '#0f172a', SpreadsheetApp.BorderStyle.SOLID_MEDIUM);
+
+    // 3. Alternating Row Colors (Zebra Striping)
+    if (dataRange) {
+        // Reset backgrounds first
+        dataRange.setBackground('#ffffff');
+
+        // Apply banding
+        // Note: applyRowBanding is better but can conflict if existing banding exists. 
+        // We'll use manual coloring for safety in this script context.
+        for (let i = 2; i <= lastRow; i++) {
+            if (i % 2 == 0) {
+                sheet.getRange(i, 1, 1, lastColumn).setBackground('#f8fafc'); // Very light slate
+            }
+        }
+
+        // 4. Data Formatting
+        dataRange.setFontFamily('Arial').setFontSize(10).setVerticalAlignment('middle');
+
+        // Date Column (A)
+        sheet.getRange(2, 1, lastRow - 1, 1).setNumberFormat('dd/MM/yyyy HH:mm:ss');
+
+        // Text Columns (B-E) - Left Align
+        sheet.getRange(2, 2, lastRow - 1, 4).setHorizontalAlignment('left');
+
+        // Number Columns (F-S) - Center Align & Number Format
+        sheet.getRange(2, 6, lastRow - 1, 14)
+            .setHorizontalAlignment('center')
+            .setNumberFormat('#,##0.00');
+
+        // Integer Columns (Total Data Points)
+        sheet.getRange(2, 19, lastRow - 1, 1).setNumberFormat('0');
+    }
+
+    // 5. Auto Resize
+    sheet.autoResizeColumns(1, lastColumn);
+
+    // Set specific widths for some columns to avoid being too narrow/wide
+    sheet.setColumnWidth(1, 150); // Timestamp
+    sheet.setColumnWidth(2, 120); // Unit Name
+    sheet.setColumnWidth(20, 200); // Regression Data (JSON)
 }
 
 // Fungsi untuk mengambil semua data unit
