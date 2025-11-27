@@ -1,378 +1,405 @@
 <!DOCTYPE html>
 <html lang="id">
-<div class="step-number">1</div>
-<div>Info Unit</div>
-</div>
-<div class="step" id="step2">
-    <div class="step-number">2</div>
-    <div>Dimensi Alat</div>
-</div>
-<div class="step" id="step3">
-    <div class="step-number">3</div>
-    <div>Data Regresi</div>
-</div>
-<div class="step" id="step4">
-    <div class="step-number">4</div>
-    <div>Review & Save</div>
-</div>
-</div>
 
-<!-- Alert Area -->
-<div id="alertArea"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Unit - Reach Stacker Simulator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
 
-<!-- Step 1: Unit Information -->
-<div class="section" id="section1">
-    <h2>
-        <span>📋</span>
-        Informasi Unit
-    </h2>
-
-    <div class="alert alert-info">
-        <strong>Langkah 1:</strong> Masukkan informasi dasar unit reach stacker yang akan dikonfigurasi.
-    </div>
-
-    <div class="grid">
-        <div class="input-group">
-            <label>Nama Unit *</label>
-            <input type="text" id="unit_name" placeholder="Contoh: RS-001" required>
-            <small>Nama unik untuk identifikasi unit</small>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏗 Reach Stacker Setup</h1>
+            <p>Konfigurasi dan Kalibrasi Unit</p>
         </div>
 
-        <div class="input-group">
-            <label>Merk/Model</label>
-            <input type="text" id="unit_brand" placeholder="Contoh: Kalmar DRG450">
-            <small>Merk dan model reach stacker</small>
+        <div class="nav">
+            <a href="index.html" class="active">Setup Unit</a>
+            <a href="simulator.html">Simulator</a>
         </div>
 
-        <div class="input-group">
-            <label>Tahun Pembuatan</label>
-            <input type="number" id="unit_year" placeholder="2020" min="1990" max="2030">
-            <small>Tahun produksi unit</small>
+        <div class="content">
+            <div class="step-indicator">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Info Unit</div>
+                </div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Dimensi Alat</div>
+                </div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Data Regresi</div>
+                </div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Review & Save</div>
+                </div>
+            </div>
+
+            <!-- Alert Area -->
+            <div id="alertArea"></div>
+
+            <!-- Step 1: Unit Information -->
+            <div class="section" id="section1">
+                <h2>
+                    <span>📋</span>
+                    Informasi Unit
+                </h2>
+
+                <div class="alert alert-info">
+                    <strong>Langkah 1:</strong> Masukkan informasi dasar unit reach stacker yang akan dikonfigurasi.
+                </div>
+
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Nama Unit *</label>
+                        <input type="text" id="unit_name" placeholder="Contoh: RS-001" required>
+                        <small>Nama unik untuk identifikasi unit</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Merk/Model</label>
+                        <input type="text" id="unit_brand" placeholder="Contoh: Kalmar DRG450">
+                        <small>Merk dan model reach stacker</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Tahun Pembuatan</label>
+                        <input type="number" id="unit_year" placeholder="2020" min="1990" max="2030">
+                        <small>Tahun produksi unit</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Lokasi/Site</label>
+                        <input type="text" id="unit_location" placeholder="Contoh: Terminal Petikemas">
+                        <small>Lokasi operasional unit</small>
+                    </div>
+                </div>
+
+                <button class="btn btn-success" onclick="nextStep(2)">Lanjut ke Dimensi Alat →</button>
+            </div>
+
+            <!-- Step 2: Dimensions -->
+            <div class="section" id="section2" style="display:none;">
+                <h2>
+                    <span>📏</span>
+                    Dimensi & Parameter Alat
+                </h2>
+
+                <div class="alert alert-info">
+                    <strong>Langkah 2:</strong> Masukkan dimensi fisik dan parameter teknis reach stacker. Data ini
+                    sangat penting untuk akurasi perhitungan.
+                </div>
+
+                <h3 style="margin-top: 20px; color: #2c3e50;">Dimensi Boom & Struktur</h3>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Panjang Boom Base (cm) *</label>
+                        <input type="number" id="dim_boom_length" value="906" step="1" required>
+                        <small>Dari pivot ke ujung boom saat retracted</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Offset Horizontal (cm) *</label>
+                        <input type="number" id="dim_horizontal_offset" value="600" step="1" required>
+                        <small>Jarak pivot ke center of gravity</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Tinggi Pivot (cm) *</label>
+                        <input type="number" id="dim_pivot_height" value="353" step="1" required>
+                        <small>Tinggi pivot boom dari ground</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Panjang Extension Max (cm) *</label>
+                        <input type="number" id="dim_extension_max" value="700" step="1" required>
+                        <small>Maximum teleskopik extension</small>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; color: #2c3e50;">Parameter Hydraulic System</h3>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Diameter Piston (mm) *</label>
+                        <input type="number" id="dim_piston_diameter" value="160" step="1" required>
+                        <small>Diameter dalam silinder hydraulic</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Mechanical Advantage *</label>
+                        <input type="number" id="dim_mech_advantage" value="302" step="1" required>
+                        <small>Rasio leverage sistem hydraulic</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Konstanta Hydraulic *</label>
+                        <input type="number" id="dim_hydraulic_const" value="481.25" step="0.01" required>
+                        <small>Faktor konversi pressure ke force</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Berat Rigging (ton) *</label>
+                        <input type="number" id="dim_rigging_weight" value="4" step="0.1" required>
+                        <small>Berat spreader + attachment</small>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 20px; color: #2c3e50;">Load Chart Parameters</h3>
+                <div class="grid">
+                    <div class="input-group">
+                        <label>Load Chart Slope *</label>
+                        <input type="number" id="dim_loadchart_slope" value="-3.993" step="0.001" required>
+                        <small>Slope kurva load chart</small>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Load Chart Intercept *</label>
+                        <input type="number" id="dim_loadchart_intercept" value="46.43" step="0.01" required>
+                        <small>Intercept kurva load chart</small>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="prevStep(1)">← Kembali</button>
+                    <button class="btn btn-success" onclick="nextStep(3)">Lanjut ke Data Regresi →</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Regression Data -->
+            <div class="section" id="section3" style="display:none;">
+                <h2>
+                    <span>📊</span>
+                    Data Kalibrasi Regresi
+                </h2>
+
+                <div class="alert alert-info">
+                    <strong>Langkah 3:</strong> Input data kalibrasi dari 3 kondisi berbeda untuk mendapatkan koefisien
+                    regresi yang akurat.
+                </div>
+
+                <div class="input-group">
+                    <label>Pilih Kondisi Beban</label>
+                    <select id="load_condition">
+                        <option value="empty">Container Empty (Kosong)</option>
+                        <option value="test">Test Load (Beban Diketahui)</option>
+                        <option value="none">Tanpa Container</option>
+                    </select>
+                </div>
+
+                <div class="input-group" id="test_load_weight_div" style="display:none;">
+                    <label>Berat Test Load (ton)</label>
+                    <input type="number" id="test_load_weight" value="20" step="0.1">
+                    <small>Berat aktual test load yang digunakan</small>
+                </div>
+
+                <div class="data-row">
+                    <div class="input-group">
+                        <label>Sudut Boom (°)</label>
+                        <input type="number" id="input_angle" placeholder="25.5" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Pressure (bar)</label>
+                        <input type="number" id="input_pressure" placeholder="200.5" step="0.1">
+                    </div>
+                    <button class="btn btn-success" onclick="addDataPoint()">➕ Tambah</button>
+                </div>
+
+                <div id="data_table_container"></div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn btn-warning" onclick="calculateRegression()">📐 Hitung Regresi</button>
+                    <button class="btn btn-danger" onclick="clearRegressionData()">🗑 Hapus Data</button>
+                </div>
+
+                <div id="regression_results" style="display:none; margin-top: 20px;">
+                    <h3 style="color: #2c3e50;">Hasil Regresi</h3>
+                    <div id="regression_output"></div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="prevStep(2)">← Kembali</button>
+                    <button class="btn btn-success" onclick="nextStep(4)">Lanjut ke Review →</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Review & Save -->
+            <div class="section" id="section4" style="display:none;">
+                <h2>
+                    <span>✅</span>
+                    Review & Simpan Data
+                </h2>
+
+                <div class="alert alert-warning">
+                    <strong>Langkah Terakhir:</strong> Review semua data yang telah diinput sebelum menyimpan ke Google
+                    Sheets.
+                </div>
+
+                <div id="review_content"></div>
+
+                <div class="loading" id="loadingIndicator">
+                    <div class="spinner"></div>
+                    <p>Menyimpan data ke Google Sheets...</p>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <button class="btn" onclick="prevStep(3)">← Kembali</button>
+                    <button class="btn btn-success" onclick="saveToGoogleSheets()" id="btnSave">💾 Simpan ke Google
+                        Sheets</button>
+                </div>
+            </div>
         </div>
-
-        <div class="input-group">
-            <label>Lokasi/Site</label>
-            <input type="text" id="unit_location" placeholder="Contoh: Terminal Petikemas">
-            <small>Lokasi operasional unit</small>
-        </div>
     </div>
 
-    <button class="btn btn-success" onclick="nextStep(2)">Lanjut ke Dimensi Alat →</button>
-</div>
+    <script>
+        // Google Apps Script Web App URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwWtYHOuWYvesIsGjkrlvh6LvgbQi-jh9hKgNMSocqQCJM78UXoegAYIgUp6x0ixWMpfQ/exec';
 
-<!-- Step 2: Dimensions -->
-<div class="section" id="section2" style="display:none;">
-    <h2>
-        <span>📏</span>
-        Dimensi & Parameter Alat
-    </h2>
+        // Global data storage
+        let regressionData = {
+            empty: [],
+            test: [],
+            none: []
+        };
 
-    <div class="alert alert-info">
-        <strong>Langkah 2:</strong> Masukkan dimensi fisik dan parameter teknis reach stacker. Data ini
-        sangat penting untuk akurasi perhitungan.
-    </div>
+        let regressionResults = {
+            slope: 0.98310488,
+            intercept: 16512.97,
+            r2: 0
+        };
 
-    <h3 style="margin-top: 20px; color: #2c3e50;">Dimensi Boom & Struktur</h3>
-    <div class="grid">
-        <div class="input-group">
-            <label>Panjang Boom Base (cm) *</label>
-            <input type="number" id="dim_boom_length" value="906" step="1" required>
-            <small>Dari pivot ke ujung boom saat retracted</small>
-        </div>
+        // Step navigation
+        function nextStep(step) {
+            // Validate current step
+            if (step === 2 && !validateStep1()) return;
+            if (step === 3 && !validateStep2()) return;
+            if (step === 4 && !validateStep3()) return;
 
-        <div class="input-group">
-            <label>Offset Horizontal (cm) *</label>
-            <input type="number" id="dim_horizontal_offset" value="600" step="1" required>
-            <small>Jarak pivot ke center of gravity</small>
-        </div>
-
-        <div class="input-group">
-            <label>Tinggi Pivot (cm) *</label>
-            <input type="number" id="dim_pivot_height" value="353" step="1" required>
-            <small>Tinggi pivot boom dari ground</small>
-        </div>
-
-        <div class="input-group">
-            <label>Panjang Extension Max (cm) *</label>
-            <input type="number" id="dim_extension_max" value="700" step="1" required>
-            <small>Maximum teleskopik extension</small>
-        </div>
-    </div>
-
-    <h3 style="margin-top: 20px; color: #2c3e50;">Parameter Hydraulic System</h3>
-    <div class="grid">
-        <div class="input-group">
-            <label>Diameter Piston (mm) *</label>
-            <input type="number" id="dim_piston_diameter" value="160" step="1" required>
-            <small>Diameter dalam silinder hydraulic</small>
-        </div>
-
-        <div class="input-group">
-            <label>Mechanical Advantage *</label>
-            <input type="number" id="dim_mech_advantage" value="302" step="1" required>
-            <small>Rasio leverage sistem hydraulic</small>
-        </div>
-
-        <div class="input-group">
-            <label>Konstanta Hydraulic *</label>
-            <input type="number" id="dim_hydraulic_const" value="481.25" step="0.01" required>
-            <small>Faktor konversi pressure ke force</small>
-        </div>
-
-        <div class="input-group">
-            <label>Berat Rigging (ton) *</label>
-            <input type="number" id="dim_rigging_weight" value="4" step="0.1" required>
-            <small>Berat spreader + attachment</small>
-        </div>
-    </div>
-
-    <h3 style="margin-top: 20px; color: #2c3e50;">Load Chart Parameters</h3>
-    <div class="grid">
-        <div class="input-group">
-            <label>Load Chart Slope *</label>
-            <input type="number" id="dim_loadchart_slope" value="-3.993" step="0.001" required>
-            <small>Slope kurva load chart</small>
-        </div>
-
-        <div class="input-group">
-            <label>Load Chart Intercept *</label>
-            <input type="number" id="dim_loadchart_intercept" value="46.43" step="0.01" required>
-            <small>Intercept kurva load chart</small>
-        </div>
-    </div>
-
-    <div style="margin-top: 20px;">
-        <button class="btn" onclick="prevStep(1)">← Kembali</button>
-        <button class="btn btn-success" onclick="nextStep(3)">Lanjut ke Data Regresi →</button>
-    </div>
-</div>
-
-<!-- Step 3: Regression Data -->
-<div class="section" id="section3" style="display:none;">
-    <h2>
-        <span>📊</span>
-        Data Kalibrasi Regresi
-    </h2>
-
-    <div class="alert alert-info">
-        <strong>Langkah 3:</strong> Input data kalibrasi dari 3 kondisi berbeda untuk mendapatkan koefisien
-        regresi yang akurat.
-    </div>
-
-    <div class="input-group">
-        <label>Pilih Kondisi Beban</label>
-        <select id="load_condition">
-            <option value="empty">Container Empty (Kosong)</option>
-            <option value="test">Test Load (Beban Diketahui)</option>
-            <option value="none">Tanpa Container</option>
-        </select>
-    </div>
-
-    <div class="input-group" id="test_load_weight_div" style="display:none;">
-        <label>Berat Test Load (ton)</label>
-        <input type="number" id="test_load_weight" value="20" step="0.1">
-        <small>Berat aktual test load yang digunakan</small>
-    </div>
-
-    <div class="data-row">
-        <div class="input-group">
-            <label>Sudut Boom (°)</label>
-            <input type="number" id="input_angle" placeholder="25.5" step="0.1">
-        </div>
-        <div class="input-group">
-            <label>Pressure (bar)</label>
-            <input type="number" id="input_pressure" placeholder="200.5" step="0.1">
-        </div>
-        <button class="btn btn-success" onclick="addDataPoint()">➕ Tambah</button>
-    </div>
-
-    <div id="data_table_container"></div>
-
-    <div style="margin-top: 20px;">
-        <button class="btn btn-warning" onclick="calculateRegression()">📐 Hitung Regresi</button>
-        <button class="btn btn-danger" onclick="clearRegressionData()">🗑 Hapus Data</button>
-    </div>
-
-    <div id="regression_results" style="display:none; margin-top: 20px;">
-        <h3 style="color: #2c3e50;">Hasil Regresi</h3>
-        <div id="regression_output"></div>
-    </div>
-
-    <div style="margin-top: 20px;">
-        <button class="btn" onclick="prevStep(2)">← Kembali</button>
-        <button class="btn btn-success" onclick="nextStep(4)">Lanjut ke Review →</button>
-    </div>
-</div>
-
-<!-- Step 4: Review & Save -->
-<div class="section" id="section4" style="display:none;">
-    <h2>
-        <span>✅</span>
-        Review & Simpan Data
-    </h2>
-
-    <div class="alert alert-warning">
-        <strong>Langkah Terakhir:</strong> Review semua data yang telah diinput sebelum menyimpan ke Google
-        Sheets.
-    </div>
-
-    <div id="review_content"></div>
-
-    <div class="loading" id="loadingIndicator">
-        <div class="spinner"></div>
-        <p>Menyimpan data ke Google Sheets...</p>
-    </div>
-
-    <div style="margin-top: 20px;">
-        <button class="btn" onclick="prevStep(3)">← Kembali</button>
-        <button class="btn btn-success" onclick="saveToGoogleSheets()" id="btnSave">💾 Simpan ke Google
-            Sheets</button>
-    </div>
-</div>
-</div>
-</div>
-
-<script>
-    // Global data storage
-    let regressionData = {
-        empty: [],
-        test: [],
-        none: []
-    };
-
-    let regressionResults = {
-        slope: 0.98310488,
-        intercept: 16512.97,
-        r2: 0
-    };
-
-    // Step navigation
-    function nextStep(step) {
-        // Validate current step
-        if (step === 2 && !validateStep1()) return;
-        if (step === 3 && !validateStep2()) return;
-        if (step === 4 && !validateStep3()) return;
-
-        // Hide all sections
-        for (let i = 1; i <= 4; i++) {
-            document.getElementById('section' + i).style.display = 'none';
-            document.getElementById('step' + i).classList.remove('active');
-            if (i < step) {
-                document.getElementById('step' + i).classList.add('completed');
+            // Hide all sections
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('section' + i).style.display = 'none';
+                document.getElementById('step' + i).classList.remove('active');
+                if (i < step) {
+                    document.getElementById('step' + i).classList.add('completed');
+                }
             }
+
+            // Show target section
+            document.getElementById('section' + step).style.display = 'block';
+            document.getElementById('step' + step).classList.add('active');
+
+            // Generate review if step 4
+            if (step === 4) {
+                generateReview();
+            }
+
+            // Scroll to top
+            window.scrollTo(0, 0);
         }
 
-        // Show target section
-        document.getElementById('section' + step).style.display = 'block';
-        document.getElementById('step' + step).classList.add('active');
-
-        // Generate review if step 4
-        if (step === 4) {
-            generateReview();
+        function prevStep(step) {
+            nextStep(step);
         }
 
-        // Scroll to top
-        window.scrollTo(0, 0);
-    }
-
-    function prevStep(step) {
-        nextStep(step);
-    }
-
-    // Validation functions
-    function validateStep1() {
-        const unitName = document.getElementById('unit_name').value.trim();
-        if (!unitName) {
-            showAlert('danger', 'Nama Unit harus diisi!');
-            return false;
-        }
-        return true;
-    }
-
-    function validateStep2() {
-        const required = [
-            'dim_boom_length', 'dim_horizontal_offset', 'dim_pivot_height',
-            'dim_extension_max', 'dim_piston_diameter', 'dim_mech_advantage',
-            'dim_hydraulic_const', 'dim_rigging_weight', 'dim_loadchart_slope',
-            'dim_loadchart_intercept'
-        ];
-
-        for (let id of required) {
-            const value = document.getElementById(id).value;
-            if (!value || value === '') {
-                showAlert('danger', 'Semua field dimensi harus diisi!');
+        // Validation functions
+        function validateStep1() {
+            const unitName = document.getElementById('unit_name').value.trim();
+            if (!unitName) {
+                showAlert('danger', 'Nama Unit harus diisi!');
                 return false;
             }
+            return true;
         }
-        return true;
-    }
 
-    function validateStep3() {
-        const totalData = regressionData.empty.length + regressionData.test.length + regressionData.none.length;
-        if (totalData < 10) {
-            showAlert('warning', 'Minimal 10 data point diperlukan untuk regresi yang akurat. Anda bisa lanjut, tapi disarankan menambah data.');
+        function validateStep2() {
+            const required = [
+                'dim_boom_length', 'dim_horizontal_offset', 'dim_pivot_height',
+                'dim_extension_max', 'dim_piston_diameter', 'dim_mech_advantage',
+                'dim_hydraulic_const', 'dim_rigging_weight', 'dim_loadchart_slope',
+                'dim_loadchart_intercept'
+            ];
+
+            for (let id of required) {
+                const value = document.getElementById(id).value;
+                if (!value || value === '') {
+                    showAlert('danger', 'Semua field dimensi harus diisi!');
+                    return false;
+                }
+            }
+            return true;
         }
-        return true;
-    }
 
-    // Alert function
-    function showAlert(type, message) {
-        const alertArea = document.getElementById('alertArea');
-        alertArea.innerHTML = `
+        function validateStep3() {
+            const totalData = regressionData.empty.length + regressionData.test.length + regressionData.none.length;
+            if (totalData < 10) {
+                showAlert('warning', 'Minimal 10 data point diperlukan untuk regresi yang akurat. Anda bisa lanjut, tapi disarankan menambah data.');
+            }
+            return true;
+        }
+
+        // Alert function
+        function showAlert(type, message) {
+            const alertArea = document.getElementById('alertArea');
+            alertArea.innerHTML = `
                 <div class="alert alert-${type}">
                     <strong>${type === 'danger' ? '❌' : type === 'success' ? '✅' : '⚠'}</strong> ${message}
                 </div>
             `;
-        setTimeout(() => {
-            alertArea.innerHTML = '';
-        }, 5000);
-    }
-
-    // Load condition change handler
-    document.getElementById('load_condition').addEventListener('change', function () {
-        const testLoadDiv = document.getElementById('test_load_weight_div');
-        if (this.value === 'test') {
-            testLoadDiv.style.display = 'block';
-        } else {
-            testLoadDiv.style.display = 'none';
-        }
-    });
-
-    // Add data point for regression
-    function addDataPoint() {
-        const angle = parseFloat(document.getElementById('input_angle').value);
-        const pressure = parseFloat(document.getElementById('input_pressure').value);
-        const condition = document.getElementById('load_condition').value;
-
-        if (isNaN(angle) || isNaN(pressure)) {
-            showAlert('danger', 'Mohon masukkan nilai yang valid!');
-            return;
+            setTimeout(() => {
+                alertArea.innerHTML = '';
+            }, 5000);
         }
 
-        regressionData[condition].push({ angle: angle, pressure: pressure });
+        // Load condition change handler
+        document.getElementById('load_condition').addEventListener('change', function () {
+            const testLoadDiv = document.getElementById('test_load_weight_div');
+            if (this.value === 'test') {
+                testLoadDiv.style.display = 'block';
+            } else {
+                testLoadDiv.style.display = 'none';
+            }
+        });
 
-        // Clear inputs
-        document.getElementById('input_angle').value = '';
-        document.getElementById('input_pressure').value = '';
+        // Add data point for regression
+        function addDataPoint() {
+            const angle = parseFloat(document.getElementById('input_angle').value);
+            const pressure = parseFloat(document.getElementById('input_pressure').value);
+            const condition = document.getElementById('load_condition').value;
 
-        updateDataTable();
-        showAlert('success', 'Data berhasil ditambahkan!');
-    }
+            if (isNaN(angle) || isNaN(pressure)) {
+                showAlert('danger', 'Mohon masukkan nilai yang valid!');
+                return;
+            }
 
-    // Update data table
-    function updateDataTable() {
-        let tableHTML = '<h3 style="margin-top: 20px; color: #2c3e50;">Data Terkumpul</h3>';
+            regressionData[condition].push({ angle: angle, pressure: pressure });
 
-        const conditionNames = {
-            'empty': 'Container Empty',
-            'test': 'Test Load',
-            'none': 'Tanpa Container'
-        };
+            // Clear inputs
+            document.getElementById('input_angle').value = '';
+            document.getElementById('input_pressure').value = '';
 
-        ['empty', 'test', 'none'].forEach(condition => {
-            if (regressionData[condition].length > 0) {
-                tableHTML += `<h4 style="margin-top: 15px; color: #34495e;">${conditionNames[condition]} (${regressionData[condition].length} data)</h4>`;
-                tableHTML += `
+            updateDataTable();
+            showAlert('success', 'Data berhasil ditambahkan!');
+        }
+
+        // Update data table
+        function updateDataTable() {
+            let tableHTML = '<h3 style="margin-top: 20px; color: #2c3e50;">Data Terkumpul</h3>';
+
+            const conditionNames = {
+                'empty': 'Container Empty',
+                'test': 'Test Load',
+                'none': 'Tanpa Container'
+            };
+
+            ['empty', 'test', 'none'].forEach(condition => {
+                if (regressionData[condition].length > 0) {
+                    tableHTML += `<h4 style="margin-top: 15px; color: #34495e;">${conditionNames[condition]} (${regressionData[condition].length} data)</h4>`;
+                    tableHTML += `
                         <table>
                             <thead>
                                 <tr>
@@ -385,8 +412,8 @@
                             <tbody>
                     `;
 
-                regressionData[condition].forEach((data, index) => {
-                    tableHTML += `
+                    regressionData[condition].forEach((data, index) => {
+                        tableHTML += `
                             <tr>
                                 <td>${index + 1}</td>
                                 <td>${data.angle.toFixed(1)}</td>
@@ -394,116 +421,116 @@
                                 <td><button class="btn btn-danger" style="padding: 5px 10px; font-size: 0.9em;" onclick="deleteDataPoint('${condition}', ${index})">Hapus</button></td>
                             </tr>
                         `;
-                });
+                    });
 
-                tableHTML += '</tbody></table>';
+                    tableHTML += '</tbody></table>';
+                }
+            });
+
+            if (regressionData.empty.length === 0 && regressionData.test.length === 0 && regressionData.none.length === 0) {
+                tableHTML += '<p style="color: #7f8c8d; margin-top: 15px;">Belum ada data. Silakan tambahkan data kalibrasi.</p>';
             }
-        });
 
-        if (regressionData.empty.length === 0 && regressionData.test.length === 0 && regressionData.none.length === 0) {
-            tableHTML += '<p style="color: #7f8c8d; margin-top: 15px;">Belum ada data. Silakan tambahkan data kalibrasi.</p>';
+            document.getElementById('data_table_container').innerHTML = tableHTML;
         }
 
-        document.getElementById('data_table_container').innerHTML = tableHTML;
-    }
-
-    // Delete data point
-    function deleteDataPoint(condition, index) {
-        regressionData[condition].splice(index, 1);
-        updateDataTable();
-        showAlert('success', 'Data berhasil dihapus!');
-    }
-
-    // Clear all regression data
-    function clearRegressionData() {
-        if (confirm('Yakin ingin menghapus semua data?')) {
-            regressionData = { empty: [], test: [], none: [] };
+        // Delete data point
+        function deleteDataPoint(condition, index) {
+            regressionData[condition].splice(index, 1);
             updateDataTable();
-            document.getElementById('regression_results').style.display = 'none';
-            showAlert('success', 'Semua data berhasil dihapus!');
-        }
-    }
-
-    // Calculate regression
-    function calculateRegression() {
-        const totalData = regressionData.empty.length + regressionData.test.length + regressionData.none.length;
-
-        if (totalData < 3) {
-            showAlert('danger', 'Minimal 3 data point diperlukan untuk regresi!');
-            return;
+            showAlert('success', 'Data berhasil dihapus!');
         }
 
-        // Get dimensions
-        const dimensions = {
-            boom_length: parseFloat(document.getElementById('dim_boom_length').value),
-            hydraulic_const: parseFloat(document.getElementById('dim_hydraulic_const').value),
-            mech_advantage: parseFloat(document.getElementById('dim_mech_advantage').value),
-            rigging_weight: parseFloat(document.getElementById('dim_rigging_weight').value)
-        };
-
-        // Combine all data with known weights
-        let allData = [];
-
-        regressionData.empty.forEach(d => {
-            allData.push({ angle: d.angle, pressure: d.pressure, weight: 2.3 });
-        });
-
-        const testWeight = parseFloat(document.getElementById('test_load_weight').value) || 20;
-        regressionData.test.forEach(d => {
-            allData.push({ angle: d.angle, pressure: d.pressure, weight: testWeight });
-        });
-
-        regressionData.none.forEach(d => {
-            allData.push({ angle: d.angle, pressure: d.pressure, weight: dimensions.rigging_weight });
-        });
+        // Clear all regression data
+        function clearRegressionData() {
+            if (confirm('Yakin ingin menghapus semua data?')) {
+                regressionData = { empty: [], test: [], none: [] };
+                updateDataTable();
+                document.getElementById('regression_results').style.display = 'none';
+                showAlert('success', 'Semua data berhasil dihapus!');
+            }
+        }
 
         // Calculate regression
-        let X = [];
-        let Y = [];
+        function calculateRegression() {
+            const totalData = regressionData.empty.length + regressionData.test.length + regressionData.none.length;
 
-        allData.forEach(d => {
-            const angle = d.angle;
-            const pressure = d.pressure;
-            const length = 0;
+            if (totalData < 3) {
+                showAlert('danger', 'Minimal 3 data point diperlukan untuk regresi!');
+                return;
+            }
 
-            const toRad = Math.PI / 180;
-            const angleRad = angle * toRad;
+            // Get dimensions
+            const dimensions = {
+                boom_length: parseFloat(document.getElementById('dim_boom_length').value),
+                hydraulic_const: parseFloat(document.getElementById('dim_hydraulic_const').value),
+                mech_advantage: parseFloat(document.getElementById('dim_mech_advantage').value),
+                rigging_weight: parseFloat(document.getElementById('dim_rigging_weight').value)
+            };
 
-            let beta = angle > 30 ? (angle * 0.94) - 27.1 : (angle * -0.96667) + 30;
-            const betaRad = beta * toRad;
+            // Combine all data with known weights
+            let allData = [];
 
-            const alpha = 90 - angle;
-            const alphaRad = alpha * toRad;
+            regressionData.empty.forEach(d => {
+                allData.push({ angle: d.angle, pressure: d.pressure, weight: 2.3 });
+            });
 
-            const z1 = pressure * dimensions.hydraulic_const;
-            const z2 = z1 * Math.cos(betaRad);
-            const z3 = (length + dimensions.boom_length + (116 * Math.sin(alphaRad))) / dimensions.mech_advantage;
-            const z4 = z2 / z3;
-            const z5 = z4 / Math.sin((90 - alpha) * toRad);
+            const testWeight = parseFloat(document.getElementById('test_load_weight').value) || 20;
+            regressionData.test.forEach(d => {
+                allData.push({ angle: d.angle, pressure: d.pressure, weight: testWeight });
+            });
 
-            X.push(z5);
-            Y.push((d.weight - dimensions.rigging_weight) * 1000);
-        });
+            regressionData.none.forEach(d => {
+                allData.push({ angle: d.angle, pressure: d.pressure, weight: dimensions.rigging_weight });
+            });
 
-        const n = X.length;
-        const sumX = X.reduce((a, b) => a + b, 0);
-        const sumY = Y.reduce((a, b) => a + b, 0);
-        const sumXY = X.reduce((sum, x, i) => sum + x * Y[i], 0);
-        const sumX2 = X.reduce((sum, x) => sum + x * x, 0);
+            // Calculate regression
+            let X = [];
+            let Y = [];
 
-        const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
-        const intercept = (sumY - slope * sumX) / n;
+            allData.forEach(d => {
+                const angle = d.angle;
+                const pressure = d.pressure;
+                const length = 0;
 
-        const yMean = sumY / n;
-        const ssTotal = Y.reduce((sum, y) => sum + Math.pow(y - yMean, 2), 0);
-        const ssResidual = Y.reduce((sum, y, i) => sum + Math.pow(y - (slope * X[i] + intercept), 2), 0);
-        const r2 = 1 - (ssResidual / ssTotal);
+                const toRad = Math.PI / 180;
+                const angleRad = angle * toRad;
 
-        // Store results
-        regressionResults = { slope, intercept, r2 };
+                let beta = angle > 30 ? (angle * 0.94) - 27.1 : (angle * -0.96667) + 30;
+                const betaRad = beta * toRad;
 
-        // Display results
-        let outputHTML = `
+                const alpha = 90 - angle;
+                const alphaRad = alpha * toRad;
+
+                const z1 = pressure * dimensions.hydraulic_const;
+                const z2 = z1 * Math.cos(betaRad);
+                const z3 = (length + dimensions.boom_length + (116 * Math.sin(alphaRad))) / dimensions.mech_advantage;
+                const z4 = z2 / z3;
+                const z5 = z4 / Math.sin((90 - alpha) * toRad);
+
+                X.push(z5);
+                Y.push((d.weight - dimensions.rigging_weight) * 1000);
+            });
+
+            const n = X.length;
+            const sumX = X.reduce((a, b) => a + b, 0);
+            const sumY = Y.reduce((a, b) => a + b, 0);
+            const sumXY = X.reduce((sum, x, i) => sum + x * Y[i], 0);
+            const sumX2 = X.reduce((sum, x) => sum + x * x, 0);
+
+            const slope = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
+            const intercept = (sumY - slope * sumX) / n;
+
+            const yMean = sumY / n;
+            const ssTotal = Y.reduce((sum, y) => sum + Math.pow(y - yMean, 2), 0);
+            const ssResidual = Y.reduce((sum, y, i) => sum + Math.pow(y - (slope * X[i] + intercept), 2), 0);
+            const r2 = 1 - (ssResidual / ssTotal);
+
+            // Store results
+            regressionResults = { slope, intercept, r2 };
+
+            // Display results
+            let outputHTML = `
                 <div class="alert alert-success">
                     <h4>Hasil Regresi Linear</h4>
                     <p style="font-size: 1.2em; margin: 10px 0;"><strong>y = ${slope.toFixed(8)} × x + ${intercept.toFixed(2)}</strong></p>
@@ -516,22 +543,22 @@
                 </div>
             `;
 
-        document.getElementById('regression_output').innerHTML = outputHTML;
-        document.getElementById('regression_results').style.display = 'block';
+            document.getElementById('regression_output').innerHTML = outputHTML;
+            document.getElementById('regression_results').style.display = 'block';
 
-        showAlert('success', 'Regresi berhasil dihitung! Koefisien akan otomatis disimpan.');
-    }
+            showAlert('success', 'Regresi berhasil dihitung! Koefisien akan otomatis disimpan.');
+        }
 
-    // Generate review
-    function generateReview() {
-        const unitName = document.getElementById('unit_name').value;
-        const unitBrand = document.getElementById('unit_brand').value;
-        const unitYear = document.getElementById('unit_year').value;
-        const unitLocation = document.getElementById('unit_location').value;
+        // Generate review
+        function generateReview() {
+            const unitName = document.getElementById('unit_name').value;
+            const unitBrand = document.getElementById('unit_brand').value;
+            const unitYear = document.getElementById('unit_year').value;
+            const unitLocation = document.getElementById('unit_location').value;
 
-        const totalData = regressionData.empty.length + regressionData.test.length + regressionData.none.length;
+            const totalData = regressionData.empty.length + regressionData.test.length + regressionData.none.length;
 
-        let reviewHTML = `
+            let reviewHTML = `
                 <div class="alert alert-info">
                     <h3>Informasi Unit</h3>
                     <p><strong>Nama Unit:</strong> ${unitName}</p>
@@ -569,73 +596,83 @@
                 </div>
             `;
 
-        document.getElementById('review_content').innerHTML = reviewHTML;
-    }
+            document.getElementById('review_content').innerHTML = reviewHTML;
+        }
 
-    // Save to Google Sheets
-    async function saveToGoogleSheets() {
-        if (!validateStep1()) return;
+        // Save to Google Sheets
+        async function saveToGoogleSheets() {
+            if (!validateStep1()) return;
 
-        // Show loading
-        document.getElementById('loadingIndicator').classList.add('show');
-        document.getElementById('btnSave').disabled = true;
+            // Show loading
+            document.getElementById('loadingIndicator').classList.add('show');
+            document.getElementById('btnSave').disabled = true;
 
-        // Prepare data
-        const data = {
-            // Unit Info
-            unit_name: document.getElementById('unit_name').value,
-            unit_brand: document.getElementById('unit_brand').value,
-            unit_year: document.getElementById('unit_year').value,
-            unit_location: document.getElementById('unit_location').value,
+            // Prepare data
+            const data = {
+                // Unit Info
+                unit_name: document.getElementById('unit_name').value,
+                unit_brand: document.getElementById('unit_brand').value,
+                unit_year: document.getElementById('unit_year').value,
+                unit_location: document.getElementById('unit_location').value,
 
-            // Dimensions
-            boom_length: document.getElementById('dim_boom_length').value,
-            horizontal_offset: document.getElementById('dim_horizontal_offset').value,
-            pivot_height: document.getElementById('dim_pivot_height').value,
-            extension_max: document.getElementById('dim_extension_max').value,
-            piston_diameter: document.getElementById('dim_piston_diameter').value,
-            mech_advantage: document.getElementById('dim_mech_advantage').value,
-            hydraulic_const: document.getElementById('dim_hydraulic_const').value,
-            rigging_weight: document.getElementById('dim_rigging_weight').value,
-            loadchart_slope: document.getElementById('dim_loadchart_slope').value,
-            loadchart_intercept: document.getElementById('dim_loadchart_intercept').value,
+                // Dimensions
+                boom_length: document.getElementById('dim_boom_length').value,
+                horizontal_offset: document.getElementById('dim_horizontal_offset').value,
+                pivot_height: document.getElementById('dim_pivot_height').value,
+                extension_max: document.getElementById('dim_extension_max').value,
+                piston_diameter: document.getElementById('dim_piston_diameter').value,
+                mech_advantage: document.getElementById('dim_mech_advantage').value,
+                hydraulic_const: document.getElementById('dim_hydraulic_const').value,
+                rigging_weight: document.getElementById('dim_rigging_weight').value,
+                loadchart_slope: document.getElementById('dim_loadchart_slope').value,
+                loadchart_intercept: document.getElementById('dim_loadchart_intercept').value,
 
-            // Regression
-            calib_factor: regressionResults.slope,
-            calib_offset: regressionResults.intercept,
-            r_squared: regressionResults.r2,
+                // Regression
+                calib_factor: regressionResults.slope,
+                calib_offset: regressionResults.intercept,
+                r_squared: regressionResults.r2,
 
-            // Regression Data
-            regression_data: JSON.stringify(regressionData),
+                // Regression Data
+                regression_data: JSON.stringify(regressionData),
 
-            // Metadata
-        },
-            body: JSON.stringify(data)
-    });
+                // Metadata
+                created_at: new Date().toISOString(),
+                total_data_points: regressionData.empty.length + regressionData.test.length + regressionData.none.length
+            };
 
-    // Hide loading
-    document.getElementById('loadingIndicator').classList.remove('show');
-    document.getElementById('btnSave').disabled = false;
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'text/plain',
+                    },
+                    body: JSON.stringify(data)
+                });
 
-    // Show success
-    showAlert('success', '✅ Data berhasil disimpan ke Google Sheets!');
+                // Hide loading
+                document.getElementById('loadingIndicator').classList.remove('show');
+                document.getElementById('btnSave').disabled = false;
 
-    // Redirect to simulator after 2 seconds
-    setTimeout(() => {
-        window.location.href = 'simulator.html';
-    }, 2000);
+                // Show success
+                showAlert('success', '✅ Data berhasil disimpan ke Google Sheets!');
 
-        } catch (error) {
-        console.error('Error:', error);
-        document.getElementById('loadingIndicator').classList.remove('show');
-        document.getElementById('btnSave').disabled = false;
-        showAlert('danger', '❌ Gagal menyimpan data. Silakan coba lagi.');
-    }
-    }
+                // Redirect to simulator after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'simulator.html';
+                }, 2000);
 
-    // Initialize
-    updateDataTable();
-</script>
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loadingIndicator').classList.remove('show');
+                document.getElementById('btnSave').disabled = false;
+                showAlert('danger', '❌ Gagal menyimpan data. Silakan coba lagi.');
+            }
+        }
+
+        // Initialize
+        updateDataTable();
+    </script>
 </body>
 
 </html>
