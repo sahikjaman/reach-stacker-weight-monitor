@@ -246,81 +246,68 @@
 
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🏗 Simulator Berat Reach Stacker</h1>
-            <p>Perhitungan Berat Container Berdasarkan Data Unit</p>
-        </div>
+        <p>Memuat data unit dari Google Sheets...</p>
+    </div>
 
-        <div class="nav">
-            <a href="setup.html">Setup Unit</a>
-            <a href="simulator.html" class="active">Simulator</a>
-        </div>
+    <div id="mainContent" style="display:none;">
+        <!-- Unit Selection -->
+        <div class="section">
+            <h2>🔧 Pilih Unit Reach Stacker</h2>
 
-        <div class="content">
-            <div class="loading" id="loadingUnits">
-                <div class="spinner"></div>
-                <p>Memuat data unit dari Google Sheets...</p>
+            <div class="alert alert-info">
+                <strong>ℹ Info:</strong> Pilih unit yang sudah dikonfigurasi untuk memulai simulasi perhitungan
+                berat.
             </div>
 
-            <div id="mainContent" style="display:none;">
-                <!-- Unit Selection -->
-                <div class="section">
-                    <h2>🔧 Pilih Unit Reach Stacker</h2>
+            <div class="input-group">
+                <label>Unit Reach Stacker</label>
+                <select id="unit_selector" onchange="loadUnitData()">
+                    <option value="">-- Pilih Unit --</option>
+                </select>
+            </div>
 
-                    <div class="alert alert-info">
-                        <strong>ℹ Info:</strong> Pilih unit yang sudah dikonfigurasi untuk memulai simulasi perhitungan
-                        berat.
-                    </div>
+            <div id="unit_info_display"></div>
+        </div>
 
-                    <div class="input-group">
-                        <label>Unit Reach Stacker</label>
-                        <select id="unit_selector" onchange="loadUnitData()">
-                            <option value="">-- Pilih Unit --</option>
-                        </select>
-                    </div>
+        <!-- Simulator -->
+        <div class="section" id="simulator_section" style="display:none;">
+            <h2>⚙ Parameter Input</h2>
 
-                    <div id="unit_info_display"></div>
+            <div class="grid">
+                <div class="input-group">
+                    <label>Sudut Boom (°)</label>
+                    <input type="number" id="sim_angle" value="25" step="0.1" min="0" max="60">
                 </div>
-
-                <!-- Simulator -->
-                <div class="section" id="simulator_section" style="display:none;">
-                    <h2>⚙ Parameter Input</h2>
-
-                    <div class="grid">
-                        <div class="input-group">
-                            <label>Sudut Boom (°)</label>
-                            <input type="number" id="sim_angle" value="25" step="0.1" min="0" max="60">
-                        </div>
-                        <div class="input-group">
-                            <label>Panjang Teleskopik (cm)</label>
-                            <input type="number" id="sim_length" value="0" step="1" min="0" max="700">
-                        </div>
-                        <div class="input-group">
-                            <label>Tekanan Kiri (bar)</label>
-                            <input type="number" id="sim_pressure_left" value="200" step="0.1">
-                        </div>
-                        <div class="input-group">
-                            <label>Tekanan Kanan (bar)</label>
-                            <input type="number" id="sim_pressure_right" value="200" step="0.1">
-                        </div>
-                    </div>
-
-                    <button class="btn btn-success" onclick="calculateWeight()">🧮 Hitung Berat</button>
+                <div class="input-group">
+                    <label>Panjang Teleskopik (cm)</label>
+                    <input type="number" id="sim_length" value="0" step="1" min="0" max="700">
                 </div>
-
-                <!-- Results -->
-                <div class="section" id="results_section" style="display:none;">
-                    <h2>📊 Hasil Perhitungan</h2>
-                    <div id="sim_results"></div>
+                <div class="input-group">
+                    <label>Tekanan Kiri (bar)</label>
+                    <input type="number" id="sim_pressure_left" value="200" step="0.1">
                 </div>
-
-                <!-- Visualization -->
-                <div class="canvas-container" id="visualization_section" style="display:none;">
-                    <h3>Visualisasi Reach Stacker</h3>
-                    <canvas id="visualCanvas" width="800" height="500"></canvas>
+                <div class="input-group">
+                    <label>Tekanan Kanan (bar)</label>
+                    <input type="number" id="sim_pressure_right" value="200" step="0.1">
                 </div>
             </div>
+
+            <button class="btn btn-success" onclick="calculateWeight()">🧮 Hitung Berat</button>
         </div>
+
+        <!-- Results -->
+        <div class="section" id="results_section" style="display:none;">
+            <h2>📊 Hasil Perhitungan</h2>
+            <div id="sim_results"></div>
+        </div>
+
+        <!-- Visualization -->
+        <div class="canvas-container" id="visualization_section" style="display:none;">
+            <h3>Visualisasi Reach Stacker</h3>
+            <canvas id="visualCanvas" width="800" height="500"></canvas>
+        </div>
+    </div>
+    </div>
     </div>
 
     <script>
